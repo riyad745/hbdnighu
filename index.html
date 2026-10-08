@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d0f33">
+<title>Happy Birthday Nighu ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="hearts" aria-hidden="true"></div>
+
+<section id="gate" class="screen active">
+  <p class="kicker" id="gateText"></p>
+  <button id="gateBtn" class="btn">Open your surprise ❤️</button>
+</section>
+
+<section id="wait" class="screen">
+  <p class="kicker">Something special begins at midnight…</p>
+  <div class="clock" id="clock"></div>
+  <p class="dim">12:00 AM · Bangladesh Time</p>
+</section>
+
+<section id="celebrate" class="screen">
+  <h1 id="title"></h1>
+  <p id="short" class="short"></p>
+  <button id="thanks" class="btn glow">Thank You ❤️</button>
+</section>
+
+<main id="site" class="screen">
+  <section class="hero">
+    <h2 id="heroTitle"></h2>
+    <p id="heroSub" class="sub"></p>
+    <a class="scroll" href="#memory" aria-label="Scroll down to photo">⌄</a>
+  </section>
+
+  <section class="memory" id="memory">
+    <div class="frame"><img id="pic" alt="Nighu"></div>
+    <p id="caption" class="caption"></p>
+    <label class="btn ghost up">Upload Our Memory ❤️<input type="file" id="file" accept="image/*" hidden></label>
+  </section>
+
+  <section class="message glass"><h3>For you</h3><p id="long"></p></section>
+
+  <section class="timeline"><h3>Our Memories</h3><ol id="tl"></ol></section>
+
+  <section class="final">
+    <p id="final"></p>
+    <button id="again" class="btn ghost">🎆 Celebrate again</button>
+  </section>
+</main>
+
+<button id="music" class="music" aria-label="Play or pause music" hidden>♪</button>
+<script src="script.js"></script>
+</body>
+</html>

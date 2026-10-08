@@ -1,0 +1,72 @@
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+:root{--night:#1d0f33;--plum:#3a1a5e;--rose:#ff8fab;--lilac:#c9a7ff;--gold:#ffd9a0;--cream:#fff1f0;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;background:var(--night)}
+body{color:var(--cream);font:400 clamp(18px,4.6vw,21px)/1.6 "Cormorant Garamond",Georgia,serif;
+  background:radial-gradient(ellipse at 50% 110%,var(--plum),var(--night) 70%)}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#hearts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#hearts i{position:absolute;bottom:-40px;font-style:normal;color:var(--rose);animation:rise linear forwards;will-change:transform}
+@keyframes rise{to{transform:translate3d(var(--dx),-115vh,0) rotate(var(--r));opacity:0}}
+.screen{position:fixed;inset:0;z-index:2;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:1.5rem;padding:calc(1.5rem + var(--st)) 1.4rem calc(1.5rem + var(--sb));text-align:center}
+.screen.active{display:flex;animation:fadein 1s both}
+@keyframes fadein{from{opacity:0}}
+.kicker{font-size:1.25rem;font-style:italic;opacity:.9}.dim{opacity:.55;font-size:1rem}
+.btn{font:600 1.2rem "Cormorant Garamond",serif;min-height:52px;padding:.75rem 2.3rem;border:0;border-radius:999px;cursor:pointer;
+  color:var(--night);background:linear-gradient(135deg,var(--gold),var(--rose));box-shadow:0 8px 30px #ff8fab55;transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 10px 40px #ff8fabaa}
+.btn:focus-visible,.music:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn.ghost{background:#ffffff10;color:var(--gold);border:1.5px solid #ffd9a0aa;box-shadow:none;display:inline-flex;align-items:center}
+.btn.glow{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px #ff8fab22,0 0 44px #ff8fabcc}}
+
+.clock{display:flex;gap:clamp(.8rem,4vw,1.6rem)}
+.clock div{display:flex;flex-direction:column;min-width:72px}
+.clock b{font:400 clamp(3.2rem,17vw,6rem)/1 "Great Vibes",cursive;color:var(--gold);text-shadow:0 0 26px #ff8fab88}
+.clock i{font-style:normal;font-size:.95rem;opacity:.6}
+
+#title{font:400 clamp(2.9rem,12.5vw,6.8rem)/1.1 "Great Vibes",cursive;color:var(--gold);max-width:12ch;
+  text-shadow:0 0 14px #ffb06b,0 0 46px #ff5f93}
+#title .w span{display:inline-block;opacity:0;animation:pop .8s cubic-bezier(.2,1.7,.4,1) forwards}
+#title .w{display:inline-block;white-space:nowrap}
+@keyframes pop{from{transform:translateY(30px) scale(.2) rotate(-8deg);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+.short{max-width:26ch;font-style:italic;font-size:1.3rem;opacity:0;animation:fadein 1.4s 4.2s forwards;animation-fill-mode:forwards}
+#thanks{opacity:0;animation:fadein 1s 5.4s forwards,pulse 2.4s 6.4s ease-in-out infinite}
+#celebrate.leave{animation:leave .9s ease-in forwards}
+@keyframes leave{to{opacity:0;transform:scale(1.35);filter:blur(10px)}}
+
+#site{display:none;justify-content:flex-start;align-items:stretch;gap:0;padding:0;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;text-align:center}
+#site.active{display:block;animation:enter 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes enter{from{opacity:0;transform:scale(.94)}}
+#site section{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:4.5rem 1.4rem}
+.hero h2{font:400 clamp(3rem,13vw,7rem)/1.1 "Great Vibes",cursive;color:var(--gold);text-shadow:0 0 30px #ff8fabaa;max-width:11ch}
+.sub{font-style:italic;opacity:.85;font-size:1.25rem;max-width:28ch}
+.scroll{text-decoration:none;padding:.4rem 1rem;position:absolute;bottom:calc(1.2rem + var(--sb));font-size:2rem;color:var(--gold);animation:bob 2s ease-in-out infinite}
+.hero{position:relative}
+@keyframes bob{50%{transform:translateY(10px)}}
+.frame{--a:0deg;position:relative;width:min(78vw,360px);padding:6px;border-radius:999px 999px 28px 28px;
+  background:conic-gradient(from var(--a),var(--rose),var(--gold),var(--lilac),var(--rose));animation:spin 8s linear infinite;
+  box-shadow:0 0 50px #ff8fab55,0 24px 60px #0008}
+@keyframes spin{to{--a:360deg}}
+.frame img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:inherit;background:#3a1a5e}
+.caption{font:400 1.9rem/1.2 "Great Vibes",cursive;color:var(--rose);max-width:20ch}
+.up{cursor:pointer}.up:focus-within{outline:3px solid #fff;outline-offset:3px}
+.glass{background:#ffffff12;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #ffffff26}
+.message{margin:0 auto;max-width:560px;border-radius:28px;min-height:0!important;margin-block:3rem;padding:2.4rem 1.7rem!important;box-shadow:0 20px 60px #0006}
+h3{font:400 2.4rem/1.1 "Great Vibes",cursive;color:var(--gold)}
+#long{font-size:1.2rem;line-height:1.8;text-align:left;white-space:pre-line}
+.timeline{justify-content:flex-start!important}
+#tl{list-style:none;padding:0;position:relative;max-width:520px;width:100%;text-align:left;margin-top:1rem}
+#tl::before{content:"";position:absolute;left:11px;top:0;bottom:0;width:2px;background:linear-gradient(var(--rose),var(--lilac),transparent)}
+#tl li{position:relative;padding:0 0 2.2rem 2.8rem;opacity:0;transform:translateY(16px);transition:.9s}
+#tl li.in{opacity:1;transform:none}
+#tl li::before{content:"♥";position:absolute;left:0;top:-2px;width:24px;text-align:center;color:var(--rose);text-shadow:0 0 12px var(--rose)}
+#tl time{color:var(--gold);font-style:italic}#tl h4{font-size:1.35rem;font-weight:600}
+#tl img{width:100%;border-radius:16px;margin-top:.6rem}
+.final p{font:400 clamp(1.9rem,7vw,3.2rem)/1.35 "Great Vibes",cursive;color:var(--gold);max-width:18ch;text-shadow:0 0 28px #ff8fab99;white-space:pre-line}
+.music{position:fixed;right:1rem;bottom:calc(1rem + var(--sb));z-index:5;width:52px;height:52px;border-radius:50%;border:1px solid #ffd9a0aa;
+  background:#ffffff1a;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--gold);font-size:1.4rem;cursor:pointer}
+.music.on{animation:pulse 2s infinite}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition:none!important}}
