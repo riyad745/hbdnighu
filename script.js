@@ -149,13 +149,12 @@ function wait(){
 }
 $("gateBtn").onclick = () => { unlock(); hearts(false); started() ? celebrate() : wait(); };
 $("gateText").textContent = started() ? "A surprise is waiting for you, " + CONFIG.name : "A little surprise for " + CONFIG.name;
-if (q.get("preview") === "site") { show("site"); watchTimeline(); }
+if (q.get("preview") === "site") { show("site"); setTimeout(watchTimeline, 0); }
 
 /* ---------- Content ---------- */
 $("heroTitle").textContent = CONFIG.heroTitle; $("heroSub").textContent = CONFIG.heroSub;
 $("caption").textContent = CONFIG.photoCaption; $("long").textContent = CONFIG.longMessage; $("final").textContent = CONFIG.finalMessage;
-$("tl").innerHTML = CONFIG.memories.map(m => `<li><time>${m.date}</time><h4>${m.title}</h4><p>${m.text}</p>${m.photo ? `<img src="${m.photo}" alt="" loading="lazy">` : ""}</li>`).join("");
-function watchTimeline(){ const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add("in")), { root: $("site"), threshold: .25 });
+function watchTimeline(){ if (!window.IntersectionObserver) { document.querySelectorAll("#tl li").forEach(li => li.classList.add("in")); return; } const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add("in")), { root: $("site"), threshold: .25 });
   document.querySelectorAll("#tl li").forEach(li => io.observe(li)); }
 for (let k = 0; k < 3; k++) setTimeout(() => $("site").addEventListener("scroll", () => Math.random() < .08 && heart(), { passive: true }), 0);
 
@@ -173,3 +172,21 @@ $("file").onchange = e => { const f = e.target.files[0]; if (!f) return; const i
     c.width = img.width * k; c.height = img.height * k; c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u);
     c.toBlob(b => { setPic(b); kv("put", "photo", b).catch(() => alert("Photo ei browser e save kora gelo na (private mode?).")); }, "image/jpeg", .9); };
   img.src = u; };
+
+/* ---------- Memories: 4 ta photo ekshathe upload (IndexedDB) ---------- */
+const shrink = (f, max = 1200) => new Promise(ok => { const img = new Image(), u = URL.createObjectURL(f);
+  img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement("canvas");
+    c.width = img.width * k; c.height = img.height * k; c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u);
+    c.toBlob(ok, "image/jpeg", .88); }; img.src = u; });
+const N = CONFIG.memories.length;
+$("tl").innerHTML = CONFIG.memories.map((m, i) => `<li><time>${m.date}</time><h4>${m.title}</h4><p>${m.text}</p>` +
+  `<img class="mp" data-i="${i}" src="${m.photo || placeholder}" alt="Memory ${i + 1}" title="Tap to change this photo"></li>`).join("");
+const memImg = i => document.querySelector(`.mp[data-i="${i}"]`);
+const setMem = (i, blob) => { const el = memImg(i); if (!el) return; if (el.dataset.u) URL.revokeObjectURL(el.dataset.u); el.dataset.u = URL.createObjectURL(blob); el.src = el.dataset.u; };
+CONFIG.memories.forEach((_, i) => kv("get", "mem" + i).then(b => b && setMem(i, b)).catch(() => {}));
+$("memHint").textContent = `Ekshathe ${N} ta photo select korun, order onujayi boshe jabe. Kono ekta photo tap korle shudhu oita change hobe.`;
+let only = null;
+$("memFiles").onchange = async e => { const files = [...e.target.files].slice(0, only === null ? N : 1);
+  for (let j = 0; j < files.length; j++) { const i = only === null ? j : only, b = await shrink(files[j]); setMem(i, b); kv("put", "mem" + i, b).catch(() => {}); }
+  e.target.value = ""; only = null; $("memFiles").multiple = true; };
+$("tl").addEventListener("click", e => { const t = e.target.closest(".mp"); if (!t) return; only = +t.dataset.i; $("memFiles").multiple = false; $("memFiles").click(); });
